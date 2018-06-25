@@ -1,6 +1,6 @@
 # Art
 
-Create a RESTful api that helps to manage a list of famous art.  Include scripts to load data and indexes.  Provide developer documentation to minimize on-boarding friction.  
+Create a RESTful api that helps to manage a list of famous art.  Include scripts to load data.  Provide developer documentation to minimize on-boarding friction.  
 
 ## Getting Started
 
