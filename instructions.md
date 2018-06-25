@@ -9,7 +9,7 @@ Create a RESTful api that helps to manage a list of famous art.  Include scripts
   Sign in to your GitHub account and fork the following repo:
 
   ```
-  https://github.com/jrs-innovation-center/art-api-exam
+  https://github.com/tripott/art-api-exam.git
   ```
 
 2. Clone your fork
