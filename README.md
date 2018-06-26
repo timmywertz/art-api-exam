@@ -47,7 +47,7 @@ COUCH_DBNAME=paintings
 
 ## Load some test data
 
-You can load data in your CouchDB database by running `npm run load`. This will take the array of documents within **load-data.js** and add them into the database.
+You can load data in your CouchDB database by running `npm run load`. This will take the array of documents within **load-data.js** and add them into your database.
 
 ```
 npm run load
@@ -79,7 +79,7 @@ This API allows you to create, read, update, delete and list various famous pain
 
 Add a painting to the collection by providing a new resource in the request body.
 
-The `name`, `category`, `price`, and `sku` properties are required.
+The `name`, `movement`, `artist`, `yearCreated`, and `museum` properties are required.
 
 **Example**
 
@@ -114,6 +114,10 @@ Returned when the supplied request body is missing or if any required fields are
 ### Response 404 Not Found
 
 The requested resource could not be found. You may be trying to access a record that does not exist, or you may have supplied an invalid URL.
+
+### Response 409 Conflict
+
+The requested resource has already been created.
 
 ### Response 500 Internal Server Error
 
@@ -160,43 +164,125 @@ An unexpected error has occurred on our side. You should never receive this resp
 
 Edits a painting. Provide the `id` in the path to identify the painting. Provide the updated painting in the body of the request.
 
-The `_id`, `_rev`, `type`, `name`, `category`, `price`, and `sku` properties are required.
-
----
+The `_id`, `_rev`, `name`, `movement`, `artist`, `yearCreated`, and `museum` properties are required.
 
 **Example**
 
-Here's an example of updating the price of the brah surfboard to 599.99
+Here's an example of updating the year of the painting to 1877. You must provide the following properties: `name`, `movement`, `artist`, `yearCreated`, and `museum name` and `museum location` properties are required.
 
 ```
-PUT /boards/58748
+PUT /paintings/painting_bal_du_moulin_de_la_galette
 
 {
-  "_id": "board_58748",
-  "_rev": "1-10e675d267f4a1961c278014f38aec1f",
-  "name": "brah",
-  "category": "longboard",
-  "price": 599.99,
-  "sku": "58748",
-  "type": "board"
+  {
+  "_id": "painting_bal_du_moulin_de_la_galette",
+  "_rev": "1-c617189487fbe325d01cb7fc74acf45b",
+  "name": "Bal du moulin de la Galette",
+  "type": "painting",
+  "movement": "impressionism",
+  "artist": "Pierre-Auguste Renoires",
+  "yearCreated": 1877,
+  "museum": {"name": "Musée d’Orsay", "location": "Paris"}
+}
 }
 ```
 
 ### Response 200 OK
 
-Returned when the operation successfully update the surfboard.
+Returned when the operation successfully updated the painting.
 
 ```
 {
-  "ok": true,
-  "id": "add",
-  "rev": "2-A6157A5EA545C99B00FF904EEF05FD9F"
+    "ok": true,
+    "id": "painting_bal_du_moulin_de_la_galette",
+    "rev": "2-7e9b8cac710e70bfe0bef2de7bb3cfdb"
+}
+```
+
+### Response 404 Not Found
+
+The requested resource could not be found. You may be trying to access a record that does not exist, or you may have supplied an invalid URL.
+
+### Response 409 Conflict
+
+The requested resource already exists. Ensure that something the painting has been updated.
+
+### Response 500 Internal Server Error
+
+An unexpected error has occurred on our side. You should never receive this response, but if you do please let us know and we'll fix it.
+
+**Examples**
+
+Here's an example of deleting a painting.
+
+```
+DELETE /paintings/painting_bal_du_moulin_de_la_galette
+```
+
+### Response 200 OK
+
+Returned when the operation successfully deleted the painting.
+
+```
+{
+"ok": true,
+"id": "painting_bal_du_moulin_de_la_galette",
+"rev": "3-fdd7fcbc62477372240862772d91c88f"
 }
 ```
 
 ### Response 400 Bad request
 
-Returned when the supplied request body is missing or if required fields are missing.
+Returned when the supplied request body is missing or if any required fields are missing.
+
+### Response 404 Not Found
+
+The requested resource could not be found. You may be trying to access a record that does not exist, or you may have supplied an invalid URL.
+
+### Response 500 Internal Server Error
+
+An unexpected error has occurred on our side. You should never receive this response, but if you do please let us know and we'll fix it.
+
+**Example**
+
+Here's an example of how to list all the paintings with a page limit of two.
+
+```
+GET /paintings?limit=2
+```
+
+Below is a sample response from the list above.
+
+```
+[
+  {
+    "_id": "painting_bal_du_moulin_de_la_galette",
+    "_rev": "5-2bac91fbd33b6612e4ea7da0552c91ca",
+    "name": "Bal du moulin de la Galette",
+    "type": "painting",
+    "movement": "impressionism",
+    "artist": "Pierre-Auguste Renoires",
+    "yearCreated": 1876,
+    "museum": {
+        "name": "Musée d’Orsay",
+        "location": "Paris"
+    }
+  },
+  {
+    "_id": "painting_guernica",
+    "_rev": "5-a8b803395d7cb6154f63c627571a5575",
+    "name": "Guernica",
+    "type": "painting",
+    "movement": "surrealism",
+    "artist": "Pablo Picasso",
+    "yearCreated": 1937,
+    "museum": {
+        "name": "Museo Nacional Centro de Arte Reina Sofía",
+        "location": "Madrid"
+    }
+  }
+]
+```
 
 ### Response 404 Not Found
 

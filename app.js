@@ -16,7 +16,8 @@ const {
 	propEq,
 	propOr,
 	isEmpty,
-	not
+	not,
+	valuesIn
 } = require('ramda')
 
 const {
@@ -56,6 +57,9 @@ app.get('/paintings', function(req, res, next) {
 		res.status(200).send(paintings)
 	})
 })
+
+//filter
+app.get('/paintings', function(req, res, next) {})
 
 app.post('/paintings', function(req, res, next) {
 	const newPainting = propOr({}, 'body', req)
@@ -121,8 +125,9 @@ app.put('/paintings/:id', function(req, res, next) {
 			'artist',
 			'yearCreated',
 			'museum' //,
-			// 'museum["name"]',
-			// 'museum["location"]'
+			//`${museum.keys('name')}` //,
+			//'{museum.name}'
+			//'museum.keys("location")'
 		],
 		newPainting
 	)

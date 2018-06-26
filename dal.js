@@ -3,7 +3,7 @@ const PouchDB = require('pouchdb-core')
 //PouchDB.plugin(require('pouchdb-find'))
 PouchDB.plugin(require('pouchdb-adapter-http'))
 
-const { map, merge } = require('ramda')
+const { compose, map, merge } = require('ramda')
 const pkGen = require('./lib/pk-gen')
 
 const db = new PouchDB(
@@ -33,6 +33,10 @@ const listPaintings = (limit, paginate, callback) => {
 		callback(null, map(row => row.doc, result.rows))
 	})
 }
+
+//filter
+///boards?limit=3&filter=category:fish
+const filterPaintings = (limit, paginate, filter, callback) => {}
 
 const updatePaintings = (painting, callback) => db.put(painting, callback)
 
